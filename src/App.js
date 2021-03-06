@@ -7,6 +7,7 @@ const StyledAppContainer = styled.main`
   padding: 2rem;
   background: #fff;
   width: 90vw;
+  max-width: 110rem;
   margin: 6rem auto 0;
   box-shadow: 10px 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
