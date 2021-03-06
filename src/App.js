@@ -57,7 +57,7 @@ function Stats({ todos }) {
   const totalTodos = todos.length;
   const completedTodos = todos.filter((singleTodo) => singleTodo.completed).length;
   return (
-    <StyledStats style={{ marginBottom: '2rem' }}>
+    <StyledStats>
       Todos completed: {completedTodos}/{totalTodos}
     </StyledStats>
   );
