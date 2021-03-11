@@ -1,8 +1,20 @@
 import { v4 as setID } from 'uuid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function useTodos(defaults) {
-  const [todos, setTodos] = useState(defaults);
+function useTodos({ defaults = [], storageKey = 'app:todos' } = {}) {
+  const [todos, setTodos] = useState(() => {
+    try {
+      const defaultTodos = typeof defaults === 'function' ? defaults() : defaults;
+      return window.localStorage.getItem(storageKey) ? JSON.parse(window.localStorage.getItem(storageKey)) : defaultTodos;
+    } catch (err) {
+      console.error('error', err);
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(storageKey, JSON.stringify(todos));
+  }, [todos, storageKey]);
 
   function addTodo(text) {
     setTodos([
@@ -10,7 +22,8 @@ function useTodos(defaults) {
       {
         id: setID(),
         text,
-        completed: false
+        completed: false,
+        createdAt: Date.now()
       }
     ]);
   }

@@ -98,18 +98,36 @@ function Stats({ todos }) {
 
 function App() {
   const inputRef = useRef();
-  const { todos, addTodo, removeTodo, toggleComplete } = useTodos([]);
+  const { todos, addTodo, removeTodo, toggleComplete } = useTodos(() => []);
   const { filters, setFilter } = useFilter();
   const appliedFilter = filters.find((f) => f.active).id;
-  const displayTodos = todos.filter((singleTodo) => {
-    if (appliedFilter === 'inprogress') {
-      return singleTodo.completed === false;
-    } else if (appliedFilter === 'completed') {
-      return singleTodo.completed === true;
-    } else {
-      return true;
-    }
-  });
+  const displayTodos = todos
+    .filter((singleTodo) => {
+      if (appliedFilter === 'inprogress') {
+        return singleTodo.completed === false;
+      } else if (appliedFilter === 'completed') {
+        return singleTodo.completed === true;
+      } else {
+        return true;
+      }
+    })
+    .sort((a, b) => {
+      if (a.createdAt > b.createdAt) {
+        return 1;
+      }
+      return -1;
+    })
+    .sort((a, b) => {
+      if (a.completed && b.completed) {
+        return 0;
+      }
+
+      if (a.completed) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
 
   function handleTodoSubmit(e) {
     e.preventDefault();
